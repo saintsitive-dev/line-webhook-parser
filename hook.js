@@ -12,8 +12,8 @@ const url = process.env.MSTEAMS_WEBHOOK;
 const webhook = new IncomingWebhook(url);
 
 const config = {
-  channelAccessToken: 'prXb5dd5VhqWQs/SzTxM0pWNbIelTftqz+AiHQP0+Ky+NQ4E1WUIq7bEn++uXpd1eh50nrutaek8X7VNfQDjQTOhS5uwkyzqetbXQpwVW9So0KKg4SZOJzHyqW05jCD+Wim4WaVG9KI2UQXnQ7ws4QdB04t89/1O/w1cDnyilFU=',
-  channelSecret: '7c9a6720dca80993cf5fc801f93abe35'
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESSTOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET
 }
 
 app.use(middleware(config))
