@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "@line/bot-sdk": "^7.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "ms-teams-webhook": "^1.0.3"
   }

@@ -3,9 +3,10 @@ const middleware = require('@line/bot-sdk').middleware
 const JSONParseError = require('@line/bot-sdk').JSONParseError
 const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed
 const { IncomingWebhook } = require('ms-teams-webhook');
+require('dotenv').config()
 
 const app = express()
-const url = 'https://outlook.office.com/webhook/e1c377b2-2568-4fe5-a38e-4673708280b1@dbb514a1-e97b-4b50-be5f-c00508b9ad5a/IncomingWebhook/4d5156c438ff44cfaf1d0b01f8c72e43/700ce299-3bd5-446a-aaa5-43c3ea3e4f8b';
+const url = process.env.MSTEAMS_WEBHOOK;
  
 // Initialize
 const webhook = new IncomingWebhook(url);
@@ -20,24 +21,26 @@ app.use(middleware(config))
 app.post('/webhook', (req, res) => {
   res.json(req.body.events) // req.body will be webhook event object
   const event = req.body.events[0];
+  console.log(event.message.text);
+  var messageObj = {
+    "@type": "MessageCard",
+    "@context": "https://schema.org/extensions",
+    "summary": "Issue 176715375",
+    "themeColor": "0078D7",
+    "title": "Issue opened: \"Chat notifications from LINE\"",
+    "sections": [
+        {
+            "activityTitle": "Sirirat Rungpetcharat",
+            "activitySubtitle": "9/13/2016, 11:46am",
+            "activityImage": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+ 
+            "text": event.message.text
+        }
+    ]
+  };
 
   (async () => {
-    await webhook.send(JSON.stringify({
-      "@type": "MessageCard",
-      "@context": "https://schema.org/extensions",
-      "summary": "Issue 176715375",
-      "themeColor": "0078D7",
-      "title": "Issue opened: \"Push notifications not working\"",
-      "sections": [
-          {
-              "activityTitle": "Miguel Garcie",
-              "activitySubtitle": "9/13/2016, 11:46am",
-              "activityImage": "https://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-   
-              "text": "test"
-          }
-      ]
-  })
+    await webhook.send(JSON.stringify(messageObj)
     );
   })();
 
